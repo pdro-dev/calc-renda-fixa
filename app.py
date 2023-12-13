@@ -51,3 +51,44 @@ bar_chart = alt.Chart(df_resultados).mark_bar().encode(
 
 st.altair_chart(bar_chart, use_container_width=True)
 st.write(f"**O título com o maior rendimento é o '{titulo_max_yield}' com um rendimento de {max_yield}%.**")
+
+# Export results button
+export_expander = st.expander('Exportar Resultados')
+if export_expander.button('Exportar Resultados para CSV'):
+    df_resultados.to_csv('rendimentos.csv', index=False)
+    export_expander.success('Arquivo exportado com sucesso!')
+
+
+# Calculation history
+history_expander = st.expander('Histórico de Cálculos')
+if 'historico_calculos' not in st.session_state:
+    st.session_state['historico_calculos'] = []
+
+# Add new calculations to history
+st.session_state['historico_calculos'].append(resultados)
+
+# Display the calculation history in a DataFrame
+df_historico = pd.DataFrame(st.session_state['historico_calculos'])
+# Add a column with the title of highest yield
+df_historico['Título de Maior Rendimento'] = df_historico.idxmax(axis=1)
+history_expander.write(df_historico)
+
+# Clear calculation history
+if history_expander.button('Limpar Histórico'):
+    st.session_state['historico_calculos'] = []
+    history_expander.success('Histórico de cálculos limpo com sucesso!')
+
+# Export calculation history
+if history_expander.button('Exportar Histórico'):
+    df_historico.to_csv('historico.csv', index=False)
+    history_expander.success('Histórico exportado com sucesso!')
+
+
+# Feedback form
+feedback_expander = st.expander('Feedback')
+with feedback_expander.form("form_feedback"):
+    feedback = st.text_area("Deixe seu feedback aqui:")
+    submitted = st.form_submit_button("Enviar Feedback")
+    if submitted:
+        # Here you can process the feedback, such as saving it to a file or database
+        feedback_expander.success("Obrigado pelo seu feedback!")
