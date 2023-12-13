@@ -28,7 +28,6 @@ with st.sidebar:
     titulo_ipca_percent = st.number_input("Taxa fixa acima do IPCA do título (%)", value=7.0, format="%.2f", step=0.01)
     titulo_di_plus = st.number_input("Taxa fixa acima do DI do título (%)", value=1.0, format="%.2f", step=0.01)
 
-
 # Cálculo automático quando qualquer input é alterado
 resultados, titulo_max_yield, max_yield = compare_yield(DI, IPCA, titulo_pre, titulo_cdi_percent, titulo_ipca_percent, titulo_di_plus)
 
@@ -58,7 +57,6 @@ if export_expander.button('Exportar Resultados para CSV'):
     df_resultados.to_csv('rendimentos.csv', index=False)
     export_expander.success('Arquivo exportado com sucesso!')
 
-
 # Calculation history
 history_expander = st.expander('Histórico de Cálculos')
 if 'historico_calculos' not in st.session_state:
@@ -82,7 +80,6 @@ if history_expander.button('Limpar Histórico'):
 if history_expander.button('Exportar Histórico'):
     df_historico.to_csv('historico.csv', index=False)
     history_expander.success('Histórico exportado com sucesso!')
-
 
 # Feedback form
 feedback_expander = st.expander('Feedback')
